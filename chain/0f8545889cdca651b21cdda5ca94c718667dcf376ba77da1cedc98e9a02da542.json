@@ -1,0 +1,1 @@
+{"blockNumber":4,"header":{"previousBlockHeaderHash":"04bae9e91c74e8c1042c99bd89abcba6474cc765eb77a246e3da61fe427d3d74","time":1539078555304,"target":1,"nonce":6,"dataHash":"93b44567353c507f7d849e75f855d656f8965d9770a96d02097327af74d2824f"},"data":{"tx":{"hoge":"foo"}}}
