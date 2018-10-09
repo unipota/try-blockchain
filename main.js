@@ -7,12 +7,6 @@ const getBlockHash = data => {
   return tmp.toString('hex')
 }
 
-// const getDataHash = ({ data }) => {
-//   const bin = crypto.createHash('sha256').update(JSON.stringify({ data }), 'utf8').digest('binary')
-//   const tmp = crypto.createHash('sha256').update(bin, 'binary').digest()
-//   return tmp.toString('hex')
-// }
-
 // ブロックのハッシュ更新
 const setDataHash = block => {
   block.header.dataHash = getBlockHash(block.data)
@@ -83,6 +77,21 @@ const makeNextBlock = block => {
   }
 }
 
+const checkChain = _ => {
+  const blockList = getBlockList().reverse()
+  if (blockList.length === 1) return true
+  for (let [i, block] in blockList.entries()) {
+    const lastBlock = blockList[i - 1]
+    const curBlock = block
+    setDataHash(lastBlock)
+    if (curBlock.header.previousBlockHeaderHash !== getBlockHash(lastBlock)) {
+      console.log(`block ${curBlock.blockNumber}.header.previousBlockHash or ${lastBlock.blockNumber}.data is wrong!`)
+      return false
+    }
+  }
+  return true
+}
+
 const main = _ => {
   setDataHash(genesisBlock)
   mining(genesisBlock)
@@ -96,6 +105,8 @@ const main = _ => {
     mining(nextBlock)
     createBlockFile(nextBlock)
   }
+
+  checkChain()
 }
 
 main()
